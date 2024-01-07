@@ -4,13 +4,17 @@ import { Input } from "@/components/ui/input";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { oneLine, stripIndent } from "common-tags";
 
 export default function Search() {
   const router = useRouter();
   const supabase = createClientComponentClient();
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const [questions, setQuestion] = useState<string[]>([]);
+  const [answers, setAnswer] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+
   const { toast } = useToast();
 
   const handleLogout = async () => {
@@ -25,8 +29,10 @@ export default function Search() {
   };
 
   const handleSearch = async () => {
+    setLoading(true);
     const searchText = inputRef.current.value;
     if (searchText && searchText.trim()) {
+      setQuestion((currentQuestion) => [...currentQuestion, searchText]);
       const res = await fetch(location.origin + "/embeddings", {
         method: "POST",
         body: JSON.stringify({ text: searchText.replace(/\n/g, " ") }),
@@ -55,19 +61,44 @@ export default function Search() {
           contextText += `${content.trim()}\n--\n`;
         }
         if (contextText) {
-            generatePrompt(contextText, searchText);
-            
+          const prompt = generatePrompt(contextText, searchText);
+          await generateAnswers(prompt);
+        } else {
+          setAnswer((currentAnswer) => [
+            ...currentAnswer,
+            "Sorry, not enough context provided!",
+          ]);
         }
-        console.log(documents)
+        console.log(documents);
       }
+    }
+    inputRef.current.value = "";
+    setLoading(false);
+  };
+
+
+  const generateAnswers = async (prompt: string) => {
+    try {
+      const res = await fetch(location.origin + "/chat", {
+        method: "POST",
+        body: JSON.stringify({ prompt }),
+      });
+
+      const data = await res.json();
+      console.log(data);
+      setAnswer((currentAnswer) => [...currentAnswer, data.choices[0].text]);
+    } catch {
+      toastMsg("Error encountered generating answers");
     }
   };
 
   const generatePrompt = (contextText: string, searchText: string) => {
     const prompt = stripIndent`${oneLine`
-    You are an assistant that helps people understand research papers. Your purpose is to
-    make research papers accessible to everyone, by lowering the entry barrier through interactive learning. 
-    Given the following research paper or papers, answer the question using only that information,
+    You are an helpful assistant that helps people understand things by asking questions. 
+    You will be expected to answer queries based on anything in the context section.
+    Your purpose is but NOT limited to making information accessible to everyone, 
+    by lowering the entry barrier through interactive learning. 
+    Given the following information, answer the question using only that information,
     outputted in markdown format. Try not to mention that you are an AI model by OpenAI, ensure that you have a smooth
     conversation. If you are unsure and the answer
     is not explicitly written in these papers, say
@@ -82,8 +113,8 @@ export default function Search() {
 
     Answer as markdown (including related code snippets if available):
   `;
-  return prompt;
-  }
+    return prompt;
+  };
 
   return (
     <>
@@ -101,9 +132,18 @@ export default function Search() {
             Logout
           </Button>
         </div>
-        <div className="text-easyResWhite space-y-3 flex items-center gap-2">
-          <h1>[User]: How to setup supabase with Next.js</h1>
-        </div>
+        {questions.map((question: string, index) => {
+          const answer = answers[index];
+          const isLoading = loading && !answer;
+          return (
+            <div className="text-easyResWhite space-y-3 flex flex-column items-center gap-2">
+                
+              <h1>[User]: {question}</h1>
+              {isLoading ? <h1>Loading...</h1> : <p>{answer}</p>}
+            </div>
+
+          );
+        })}
       </div>
       <Input
         ref={inputRef}
