@@ -69,7 +69,6 @@ export default function Search() {
         }*/
         const content = documents[0].content;
         contextText += content;
-        console.log(contextText);
         if (contextText) {
           const prompt = generatePrompt(contextText, searchText);
           await generateAnswers(prompt);
@@ -93,7 +92,6 @@ export default function Search() {
       });
 
       const data = await res.json();
-      console.log(data.choices[0].message.content);
       if (data.choices && data.choices.length > 0) {
         setAnswer((currentAnswer) => [
           ...currentAnswer,

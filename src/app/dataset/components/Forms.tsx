@@ -40,7 +40,6 @@ export default function Forms() {
       });
 
       const data = await req.json();
-      console.log(data);
 
       // Assuming data.docs is an array of Document objects
       const pageTextArr = data.docs.map((doc: any) => doc.pageContent);
@@ -59,7 +58,6 @@ export default function Forms() {
     setLoading(true);
     const content = pageTextStr;
     if (content && content.trim()) {
-      console.log(content)
       const res = await fetch(location.origin + "/embeddings", {
         method: "POST",
         body: JSON.stringify({ text: content.replace(/\n/g, " ") }),
