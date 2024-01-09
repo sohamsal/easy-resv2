@@ -19,7 +19,7 @@ export default async function Page() {
     .select("role")
     .eq("id", data.session.user.id)
     .single();
-
+  
   if (user?.role !== "admin") {
     return redirect("/");
   }

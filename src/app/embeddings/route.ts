@@ -1,3 +1,4 @@
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
@@ -7,6 +8,16 @@ const openai = new OpenAI({
 });
 
 export async function POST(req: Request) {
+  const supabase = createServerComponentClient({ cookies });
+  const { data, error } = await supabase.auth.getSession();
+  const { data: user } = await supabase
+    .from("users")
+    .select("id")
+    .eq("id", data!.session!.user.id)
+    .single();
+  
+  
+
   const isAuth = cookies().get("sb-jbxtronawrxadrnqizje-auth-token");
   if (!isAuth) {
     return NextResponse.json({ message: "Forbidden access" }, { status: 403 });
@@ -32,10 +43,11 @@ export async function POST(req: Request) {
 
     const embedding = result.data[0].embedding;
     const token = result.usage.total_tokens;
-
+    const uuid = user?.id;
     return NextResponse.json({
       embedding,
-      token,
+      token, 
+      uuid
     });
 
   } catch {

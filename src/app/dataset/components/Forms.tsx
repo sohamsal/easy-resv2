@@ -71,11 +71,12 @@ export default function Forms() {
         const result = await res.json();
         const embedding = result.embedding;
         const token = result.token;
-
+        const uuid = result.uuid;
         const { error } = await supabase.from("documents").insert({
           content,
           embedding,
           token,
+          uuid
         });
         if (error) {
           toastMsg(error.message);

@@ -29,6 +29,14 @@ export default function Search() {
   };
 
   const handleSearch = async () => {
+    const { data, error } = await supabase.auth.getSession();
+    const { data: user } = await supabase
+      .from("users")
+      .select("id")
+      .eq("id", data!.session!.user.id)
+      .single();
+
+    const userSessionId = user?.id;
     setLoading(true);
     const searchText = inputRef.current.value;
     if (searchText && searchText.trim()) {
@@ -48,6 +56,7 @@ export default function Search() {
           query_embedding: data.embedding,
           match_threshold: 0.7,
           match_count: 10,
+          uuid: userSessionId,
         });
 
         let tokenCount = 0;
@@ -58,9 +67,9 @@ export default function Search() {
           tokenCount += document.token;
           contextText += `${content.trim()}\n--\n`;
         }*/
-        const content = documents[0].content
-        contextText += content
-        console.log(contextText)
+        const content = documents[0].content;
+        contextText += content;
+        console.log(contextText);
         if (contextText) {
           const prompt = generatePrompt(contextText, searchText);
           await generateAnswers(prompt);
@@ -84,9 +93,12 @@ export default function Search() {
       });
 
       const data = await res.json();
-      console.log(data.choices[0].message.content)
+      console.log(data.choices[0].message.content);
       if (data.choices && data.choices.length > 0) {
-        setAnswer((currentAnswer) => [...currentAnswer, data.choices[0].message.content]);
+        setAnswer((currentAnswer) => [
+          ...currentAnswer,
+          data.choices[0].message.content,
+        ]);
       } else {
         toastMsg("No choices available");
       }
@@ -96,7 +108,6 @@ export default function Search() {
   };
 
   const generatePrompt = (contextText: string, searchText: string) => {
-
     const prompt = stripIndent`${oneLine`
     You are an helpful assistant that helps people understand things by asking questions. 
     You will be expected to answer queries based on anything in the context section.
