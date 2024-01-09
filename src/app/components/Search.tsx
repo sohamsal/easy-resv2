@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import React, { useRef, useState } from "react";
 import { oneLine, stripIndent } from "common-tags";
+import Link from "next/link";
 
 export default function Search() {
   const router = useRouter();
@@ -54,7 +55,7 @@ export default function Search() {
 
         const { data: documents } = await supabase.rpc("match_documents", {
           query_embedding: data.embedding,
-          match_threshold: 0.7,
+          match_threshold: 0.5,
           match_count: 10,
           uuid: userSessionId,
         });
@@ -67,8 +68,26 @@ export default function Search() {
           tokenCount += document.token;
           contextText += `${content.trim()}\n--\n`;
         }*/
-        const content = documents[0].content;
-        contextText += content;
+        console.log(userSessionId);
+        console.log(documents[1].uuid);
+        console.log(documents[0].uuid);
+        if (documents[0].uuid == `${userSessionId}`) {
+          const content = documents[0].content;
+          contextText += content;
+        } else if (
+          documents[0].uuid !== `${userSessionId}` &&
+          documents.length > 1
+        ) {
+          if (
+            documents[1].uuid === `${userSessionId}` &&
+            documents[1].content === documents[0].content
+          ) {
+            const content = documents[1].content;
+            contextText += content;
+          }
+        } else {
+          contextText = documents;
+        }
         if (contextText) {
           const prompt = generatePrompt(contextText, searchText);
           await generateAnswers(prompt);
@@ -115,7 +134,7 @@ export default function Search() {
     outputted in markdown format. Try not to mention that you are an AI model by OpenAI, ensure that you have a smooth
     conversation. If you are unsure and the answer
     is not explicitly written in these papers, say
-    "Sorry, I would require more information to help you out"`}
+    "Sorry, I would require more information to help you out "`}
 
     Context sections:
     ${contextText}
@@ -131,15 +150,15 @@ export default function Search() {
 
   return (
     <>
-      <div className="flex-1 h-50dvh overflow-y-auto space-y-7">
+      <div className="flex-1 h-50dvh space-y-7 max-h-dvh overflow-auto">
         <div className="flex items-center justify-between border-b pb-3 border-[#292929]">
           <div>
-            <h1 className="text-2xl text-easyResPink text-center font-bold  ">
+            <h1 className="text-4xl text-easyResPink text-center font-bold  ">
               easy-research📃
             </h1>
           </div>
           <Button
-            className="bg-easyResWhite text-easyResBg shadow-sm shadow-black"
+            className="bg-easyResWhite text-easyResBg shadow-sm shadow-black hover:bg-easyResBg hover:border-none"
             onClick={handleLogout}
           >
             Logout
@@ -151,23 +170,36 @@ export default function Search() {
           return (
             <div
               key={index}
-              className="text-easyResWhite space-y-3 flex flex-column items-center gap-2"
+              className="text-easyResWhite flex flex-column items-center p-2 mb-2 hover:bg-easyResBg"
             >
               {isLoading ? <h1>Loading...</h1> : <p>{answer}</p>}
             </div>
           );
         })}
       </div>
-      <Input
-        ref={inputRef}
-        className="p-3 border-none bg-easyResBg text-easyResWhite border-2 shadow-sm shadow-black"
-        placeholder="type your question here (ex. what is the point of this paper?)"
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            handleSearch();
-          }
-        }}
-      />
+      <div className="flex flex-row items-center">
+        <Input
+          ref={inputRef}
+          className="p-3 border-none bg-easyResBg text-easyResWhite border-2 shadow-sm shadow-black"
+          placeholder="type your question here (ex. what is the point of this paper?)"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearch();
+            }
+          }}
+        />
+        <Button
+          onClick={handleSearch}
+          className="ml-3 bg-easyResWhite text-easyResBg shadow-sm shadow-black hover:bg-easyResBg hover:border-none"
+        >
+          ▶
+        </Button>
+      </div>
+      <Link href={`${location.origin}/dataset`}>
+        <Button className="w-full mt-4 bg-easyResPink border-easyResBg text-easyResBg  shadow-black hover:bg-easyResBg ">
+          Add your data
+        </Button>
+      </Link>
     </>
   );
 }

@@ -1,4 +1,3 @@
-// Forms.tsx
 "use client";
 import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -6,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { WebPDFLoader } from "langchain/document_loaders/web/pdf";
+import Link from "next/link";
 
 export default function Forms() {
   const supabase = createClientComponentClient();
@@ -41,9 +41,8 @@ export default function Forms() {
 
       const data = await req.json();
 
-      // Assuming data.docs is an array of Document objects
       const pageTextArr = data.docs.map((doc: any) => doc.pageContent);
-      setPageTextStr(pageTextArr[0])
+      setPageTextStr(pageTextArr[0]);
 
       toastMsg("PDF loaded successfully!");
     } catch (error) {
@@ -74,13 +73,13 @@ export default function Forms() {
           content,
           embedding,
           token,
-          uuid
+          uuid,
         });
         if (error) {
           toastMsg(error.message);
         } else {
           toast({
-            title: "Successfully create embedding.",
+            title: "Successfully created embeddings.",
           });
           setPageTextStr("");
         }
@@ -98,13 +97,25 @@ export default function Forms() {
         className="p-2 h-10 bg-easyResWhite text-easyResBg underline my-2"
         ref={inputRef}
       />
-      <Button
-        className="w-full bg-easyResWhite text-easyResBg my-2"
-        onClick={handleSubmit}
-        disabled={loading}
-      >
-        {loading ? "Loading..." : "Submit"}
-      </Button>
+
+      <div className="flex flex-col justify-center items-center">
+        <Button
+          className="w-full bg-easyResWhite text-easyResBg my-2"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? "Loading..." : "Submit"}
+        </Button>
+
+        <Link href={`${location.origin}/`}>
+          <Button
+            className=" mr-2 bg-easyResPink text-easyResBg border-easyResBg my-2 hover:bg-easyResBoxBg hover:border-easyResWhite"
+            disabled={loading}
+          >
+            Return to chat
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }

@@ -20,9 +20,9 @@ export default async function Page() {
     .eq("id", data.session.user.id)
     .single();
   
-  if (user?.role !== "admin") {
+  /*if (user?.role !== "admin") {
     return redirect("/");
-  }
+  }*/
 
   return (
     <div className="bg-easyResBg">

@@ -14,7 +14,7 @@ export default async function Home() {
   return (
     <div className="bg-easyResBg">
       <div className=" max-w-5xl mx-auto h-screen flex justify-center items-center">
-        <div className="w-full h-halfdvh rounded-sm shadow-md shadow-[#000000] flex flex-col p-5 bg-easyResBoxBg">
+        <div className="w-3/5 h-3/4 rounded-sm shadow-md shadow-[#000000] flex flex-col p-5 bg-easyResBoxBg">
           <Search />
         </div>
       </div>
