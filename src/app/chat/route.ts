@@ -14,11 +14,9 @@ export async function POST(req: Request) {
 
   const { prompt } = await req.json();
   try {
-    const res = await openai.completions.create({
-      prompt,
-      model: "text-davinci-003",
-      max_tokens: 512,
-      temperature: 0,
+    const res = await openai.chat.completions.create({
+      messages:[{"role": "system", "content": prompt}],
+      model:"gpt-3.5-turbo"
     });
     return NextResponse.json({ choices: res.choices });
   } catch {

@@ -33,6 +33,7 @@ export default function Search() {
     const searchText = inputRef.current.value;
     if (searchText && searchText.trim()) {
       setQuestion((currentQuestion) => [...currentQuestion, searchText]);
+
       const res = await fetch(location.origin + "/embeddings", {
         method: "POST",
         body: JSON.stringify({ text: searchText.replace(/\n/g, " ") }),
@@ -42,24 +43,24 @@ export default function Search() {
         toastMsg("Failed to create embeddings");
       } else {
         const data = await res.json();
+
         const { data: documents } = await supabase.rpc("match_documents", {
           query_embedding: data.embedding,
-          match_threshold: 0.8,
+          match_threshold: 0.7,
           match_count: 10,
         });
 
         let tokenCount = 0;
         let contextText = "";
-        for (let i = 0; i < documents.length; i++) {
+        /*for (let i = 0; i < documents.length; i++) {
           const document = documents[i];
           const content = document.content;
           tokenCount += document.token;
-
-          if (tokenCount > 1500) {
-            break;
-          }
           contextText += `${content.trim()}\n--\n`;
-        }
+        }*/
+        const content = documents[0].content
+        contextText += content
+        console.log(contextText)
         if (contextText) {
           const prompt = generatePrompt(contextText, searchText);
           await generateAnswers(prompt);
@@ -69,13 +70,11 @@ export default function Search() {
             "Sorry, not enough context provided!",
           ]);
         }
-        console.log(documents);
       }
     }
     inputRef.current.value = "";
     setLoading(false);
   };
-
 
   const generateAnswers = async (prompt: string) => {
     try {
@@ -85,14 +84,19 @@ export default function Search() {
       });
 
       const data = await res.json();
-      console.log(data);
-      setAnswer((currentAnswer) => [...currentAnswer, data.choices[0].text]);
+      console.log(data.choices[0].message.content)
+      if (data.choices && data.choices.length > 0) {
+        setAnswer((currentAnswer) => [...currentAnswer, data.choices[0].message.content]);
+      } else {
+        toastMsg("No choices available");
+      }
     } catch {
       toastMsg("Error encountered generating answers");
     }
   };
 
   const generatePrompt = (contextText: string, searchText: string) => {
+
     const prompt = stripIndent`${oneLine`
     You are an helpful assistant that helps people understand things by asking questions. 
     You will be expected to answer queries based on anything in the context section.
@@ -136,12 +140,12 @@ export default function Search() {
           const answer = answers[index];
           const isLoading = loading && !answer;
           return (
-            <div className="text-easyResWhite space-y-3 flex flex-column items-center gap-2">
-                
-              <h1>[User]: {question}</h1>
+            <div
+              key={index}
+              className="text-easyResWhite space-y-3 flex flex-column items-center gap-2"
+            >
               {isLoading ? <h1>Loading...</h1> : <p>{answer}</p>}
             </div>
-
           );
         })}
       </div>

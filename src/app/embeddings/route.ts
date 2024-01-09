@@ -13,6 +13,7 @@ export async function POST(req: Request) {
   }
 
   const request = await req.json();
+  
 
   if (!request?.text) {
     return NextResponse.json(
