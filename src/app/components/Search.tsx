@@ -68,9 +68,7 @@ export default function Search() {
           tokenCount += document.token;
           contextText += `${content.trim()}\n--\n`;
         }*/
-        console.log(userSessionId);
-        console.log(documents[1].uuid);
-        console.log(documents[0].uuid);
+        
         if (documents[0].uuid == `${userSessionId}`) {
           const content = documents[0].content;
           contextText += content;
