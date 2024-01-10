@@ -3,13 +3,16 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
+
+
+
 export default function AuthComponent() {
   const supabase = createClientComponentClient();
   const githubLogin = () => {
 		supabase.auth.signInWithOAuth({
 			provider: "github",
 			options: {
-				redirectTo: 'https://easyres.vercel.app' + "/auth/callback",
+				redirectTo: 'https://easyres.vercel.app/' + "auth/callback",
 			},
 		});
 	};
@@ -18,7 +21,7 @@ export default function AuthComponent() {
     supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-            redirectTo: 'https://easyres.vercel.app' + "/auth/callback" ,
+            redirectTo: 'https://easyres.vercel.app/' + "auth/callback" ,
         },
     });
   };
