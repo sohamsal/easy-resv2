@@ -15,13 +15,7 @@ export async function POST(req: Request) {
     .select("id")
     .eq("id", data!.session!.user.id)
     .single();
-  
-  
 
-  /*const isAuth = cookies().get("sb-jbxtronawrxadrnqizje-auth-token");
-  if (!isAuth) {
-    return NextResponse.json({ message: "Forbidden access" }, { status: 403 });
-  }*/
 
   const request = await req.json();
   

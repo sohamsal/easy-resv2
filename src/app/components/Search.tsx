@@ -43,7 +43,7 @@ export default function Search() {
     if (searchText && searchText.trim()) {
       setQuestion((currentQuestion) => [...currentQuestion, searchText]);
 
-      const res = await fetch('https://easyres.vercel.app' + "/embeddings", {
+      const res = await fetch(`${location.origin}` + "/embeddings", {
         method: "POST",
         body: JSON.stringify({ text: searchText.replace(/\n/g, " ") }),
       });
@@ -103,7 +103,7 @@ export default function Search() {
 
   const generateAnswers = async (prompt: string) => {
     try {
-      const res = await fetch('https://easyres.vercel.app' + "/chat", {
+      const res = await fetch(`${location.origin}` + "/chat", {
         method: "POST",
         body: JSON.stringify({ prompt }),
       });
@@ -193,7 +193,7 @@ export default function Search() {
           ▶
         </Button>
       </div>
-      <Link href={`https://easyres.vercel.app/dataset`}>
+      <Link href={`${location.origin}/dataset`}>
         <Button className="w-full mt-4 bg-easyResPink border-easyResBg text-easyResBg  shadow-black hover:bg-easyResBg ">
           Add your data
         </Button>
