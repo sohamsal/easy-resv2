@@ -68,7 +68,7 @@ export default function Search() {
           tokenCount += document.token;
           contextText += `${content.trim()}\n--\n`;
         }*/
-
+        
         if (documents[0].uuid == `${userSessionId}`) {
           const content = documents[0].content;
           contextText += content;
@@ -156,16 +156,9 @@ export default function Search() {
             </h1>
           </div>
           <Button
-            className="bg-easyResWhite text-easyResBg shadow-sm shadow-black hover:bg-easyResBg hover:border-none"
+            className="bg-easyResWhite text-easyResBg shadow-sm shadow-black hover:bg-easyResBg hover:border-none max-[450px]:mt-10"
             onClick={handleLogout}
           >
-            <style jsx>{`
-              @media (min-width: 450px) {
-                button {
-                  margin: 5px;
-                }
-              }
-            `}</style>
             Logout
           </Button>
         </div>
@@ -205,14 +198,7 @@ export default function Search() {
           Add your data
         </Button>
       </Link>
-      <style>
-        {`@media (max-width: 460px) {
-            iframe {
-              width: 670px;
-              height: 376px;
-            }
-          }`}
-      </style>
+      
     </>
   );
 }
