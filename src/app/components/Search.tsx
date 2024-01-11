@@ -68,7 +68,7 @@ export default function Search() {
           tokenCount += document.token;
           contextText += `${content.trim()}\n--\n`;
         }*/
-        
+
         if (documents[0].uuid == `${userSessionId}`) {
           const content = documents[0].content;
           contextText += content;
@@ -92,7 +92,7 @@ export default function Search() {
         } else {
           setAnswer((currentAnswer) => [
             ...currentAnswer,
-            "Sorry, not enough context provided!",
+            "Sorry, not enough context provided! Please be more descriptive about the document!",
           ]);
         }
       }
@@ -159,6 +159,13 @@ export default function Search() {
             className="bg-easyResWhite text-easyResBg shadow-sm shadow-black hover:bg-easyResBg hover:border-none"
             onClick={handleLogout}
           >
+            <style jsx>{`
+              @media (min-width: 450px) {
+                button {
+                  margin: 5px;
+                }
+              }
+            `}</style>
             Logout
           </Button>
         </div>
@@ -198,6 +205,14 @@ export default function Search() {
           Add your data
         </Button>
       </Link>
+      <style>
+        {`@media (max-width: 460px) {
+            iframe {
+              width: 670px;
+              height: 376px;
+            }
+          }`}
+      </style>
     </>
   );
 }
