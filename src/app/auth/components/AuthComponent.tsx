@@ -38,7 +38,7 @@ export default function AuthComponent() {
       <div className="flex flex-col justify-center items-center">
         <iframe
           className="w-full m-5 aspect-video"
-          src="https://www.youtube.com/embed/5frZSfMNEmc?si=D--vWSixpGR6CkYv"
+          src="https://www.youtube.com/watch?v=pMrqd4Ukpsc"
           title="YouTube video player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
