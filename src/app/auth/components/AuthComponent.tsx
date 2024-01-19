@@ -32,17 +32,18 @@ export default function AuthComponent() {
         Making research papers accessible to everyone, by lowering the entry
         barrier through interactive learning. <br />
         <br />
-        This project is still a WIP. Essentially this is a GPT-Wrapper, but
-        check out the 
+        This project is still a WIP. Essentially right now this is a GPT-Wrapper, but I want this to be something more. <br/>Check out the
+        
+        {" "}
         <a
         href="https://www.notion.so/sohamsal/What-I-m-working-on-42634915a37445c4a0081f08f62f8725?pvs=4#6df6d74626ac4da7b4e3e39307f6e206"
         target="_blank"
-        className="text-easyResPink underline"
+        className="transition ease-in-out delay-50 text-easyResPink underline hover:text-easyResWhite hover:transition-color"
       >
         notion page
       </a>
-         for my plans (if you have not already). <br />
-        Below is a VERY early demo of the first iteration of the app:{" "}
+        {" "}for more details (if you have not already). <br /> <br />
+        Below is a demo of the first iteration:{" "}
       </p>
       <div className="flex flex-col justify-center items-center">
         <iframe
