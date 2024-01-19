@@ -41,7 +41,7 @@ export default function AuthComponent() {
       >
         notion page
       </a>
-         for my plans (if you haven't already). <br />
+         for my plans (if you have not already). <br />
         Below is a VERY early demo of the first iteration of the app:{" "}
       </p>
       <div className="flex flex-col justify-center items-center">
