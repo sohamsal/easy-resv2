@@ -1,7 +1,9 @@
 # easy-research
 
->Authenticate with your Google account
+1. Authenticate with your Google account
 
->Add your PDF Files
+2. Add your PDF Files
 
->Go back to chat, and now you can chat with your files!
+3. Go back to chat, and now you can chat with your files!
+
+any questions? dm me on twitter @artarioo
