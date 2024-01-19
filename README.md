@@ -6,4 +6,4 @@
 
 3. Go back to chat, and now you can chat with your files!
 
-any questions? dm me on twitter @artarioo
+any questions? dm me on twitter @sohamsal
