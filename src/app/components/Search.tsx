@@ -103,6 +103,7 @@ export default function Search() {
 
   const generateAnswers = async (prompt: string) => {
     try {
+      
       const res = await fetch(`https://easyres.vercel.app` + "/chat", {
         method: "POST",
         body: JSON.stringify({ prompt }),
