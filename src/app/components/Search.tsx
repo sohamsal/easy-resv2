@@ -50,7 +50,9 @@ export default function Search() {
 
       if (res.status != 200) {
         toastMsg("Failed to create embeddings");
-      } else {
+      } 
+      else 
+      {
         const data = await res.json();
 
         const { data: documents } = await supabase.rpc("match_documents", {
@@ -68,28 +70,36 @@ export default function Search() {
           tokenCount += document.token;
           contextText += `${content.trim()}\n--\n`;
         }*/
-        
-        if (documents[0].uuid == `${userSessionId}`) {
-          const content = documents[0].content;
-          contextText += content;
-        } else if (
-          documents[0].uuid !== `${userSessionId}` &&
-          documents.length > 1
-        ) {
-          if (
-            documents[1].uuid === `${userSessionId}` &&
-            documents[1].content === documents[0].content
-          ) {
-            const content = documents[1].content;
+        if (documents.length !== 0) 
+        {
+          if (documents[0].uuid == `${userSessionId}`) {
+            const content = documents[0].content;
             contextText += content;
+          } else if (
+            documents[0].uuid !== `${userSessionId}` && 
+            documents.length > 1
+          ) {
+            if (
+              documents[1].uuid === `${userSessionId}` &&
+              documents[1].content === documents[0].content
+            ) {
+              const content = documents[1].content;
+              contextText += content;
+            }
+          } else {
+            contextText = documents;
           }
-        } else {
-          contextText = documents;
+          if (contextText) {
+            const prompt = generatePrompt(contextText, searchText);
+            await generateAnswers(prompt);
+          } else {
+            setAnswer((currentAnswer) => [
+              ...currentAnswer,
+              "Sorry, not enough context provided! Please be more descriptive about the document!",
+            ]);
+          }
         }
-        if (contextText) {
-          const prompt = generatePrompt(contextText, searchText);
-          await generateAnswers(prompt);
-        } else {
+        else {
           setAnswer((currentAnswer) => [
             ...currentAnswer,
             "Sorry, not enough context provided! Please be more descriptive about the document!",
