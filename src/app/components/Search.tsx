@@ -102,7 +102,7 @@ export default function Search() {
         else {
           setAnswer((currentAnswer) => [
             ...currentAnswer,
-            "Sorry, not enough context provided! Please be more descriptive about the document!",
+            "If you see this message, then the application is down right now, I plan to fix it as soon as I get school and stuff out of the way",
           ]);
         }
       }
