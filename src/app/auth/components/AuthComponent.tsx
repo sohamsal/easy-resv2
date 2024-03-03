@@ -25,7 +25,7 @@ export default function AuthComponent() {
 
   return (
     <div className=" w-full h-screen flex flex-col justify-center items-center bg-easyResBg ">
-      <h1 className="font-bold text-5xl text-easyResPink text-center"> Currently broken, will eventually try to fix this maybe </h1>
+      <h1 className="font-bold text-5xl text-easyResPink text-center"> [Currently broken, will eventually try to fix this maybe] </h1>
       <h1 className="font-bold text-5xl text-easyResPink text-center">
         Welcome to easy-research!
       </h1>
@@ -33,7 +33,7 @@ export default function AuthComponent() {
         Making research papers accessible to everyone, by lowering the entry
         barrier through interactive learning. <br />
         <br />
-        This project is still a WIP. Essentially right now this is a GPT-Wrapper, but I want this to be something more. <br/>Check out the
+        Still a WIP, ran into some roadblocks, might start it back up during summer '24. <br/>Check out the
         
         {" "}
         <a
@@ -43,7 +43,7 @@ export default function AuthComponent() {
       >
         notion page
       </a>
-        {" "}for more details (if you have not already). <br /> <br />
+        {" "}for more details. <br /> <br />
         Below is a demo of the first iteration:{" "}
       </p>
       <div className="flex flex-col justify-center items-center">
