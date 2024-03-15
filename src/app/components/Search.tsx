@@ -62,7 +62,6 @@ export default function Search() {
           uuid: userSessionId,
         });
 
-        let tokenCount = 0;
         let contextText = "";
         /*for (let i = 0; i < documents.length; i++) {
           const document = documents[i];
@@ -102,7 +101,7 @@ export default function Search() {
         else {
           setAnswer((currentAnswer) => [
             ...currentAnswer,
-            "If you see this message, then the application is down right now, I plan to fix it as soon as I get school and stuff out of the way",
+            "If you see this message, then the application is down right now, I plan to fix it as soon as I get school and stuff out of the way\n Here's a video link for how it would've worked: https://www.youtube.com/watch?v=cdyh5yn94PY",
           ]);
         }
       }
