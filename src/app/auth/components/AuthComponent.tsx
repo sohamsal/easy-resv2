@@ -25,7 +25,7 @@ export default function AuthComponent() {
 
   return (
     <div className=" w-full h-screen flex flex-col justify-center items-center bg-easyResBg ">
-      <h1 className="font-bold text-5xl text-easyResPink text-center"> [Currently broken, will eventually try to fix this maybe] </h1>
+      
       <h1 className="font-bold text-5xl text-easyResPink text-center">
         Welcome to easy-research!
       </h1>
