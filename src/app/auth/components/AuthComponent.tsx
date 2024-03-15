@@ -33,7 +33,7 @@ export default function AuthComponent() {
         Making research papers accessible to everyone, by lowering the entry
         barrier through interactive learning. <br />
         <br />
-        Still a WIP, ran into some roadblocks, might start it back up during summer '24. <br/>Check out the
+        Still a WIP, ran into some roadblocks, will work on adding visualizations this summer <br/>Check out the
         
         {" "}
         <a
@@ -78,4 +78,3 @@ export default function AuthComponent() {
   );
 }
 
-//<div className=" w-50dvw h-50dvh shadow-sm p-6 rounded-sm space-y-2 bg-easyResBoxBg "></div>
