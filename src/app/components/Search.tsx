@@ -70,15 +70,11 @@ export default function Search() {
         }*/
         if (documents.length !== 0) 
         {
-          if (documents[0].uuid == `${userSessionId}`) {
             const content = documents[0].content;
             contextText += content;
-          } else if (
-            documents[0].uuid !== `${userSessionId}` && 
-            documents.length > 1
-          ) {
+           if (documents.length > 1) {
             if (
-              documents[1].uuid === `${userSessionId}` &&
+              
               documents[1].content === documents[0].content
             ) {
               const content = documents[1].content;
