@@ -57,9 +57,8 @@ export default function Search() {
 
         const { data: documents } = await supabase.rpc("match_documents", {
           query_embedding: data.embedding,
-          match_threshold: 0.5,
+          match_threshold: 0.25,
           match_count: 10,
-          uuid: userSessionId,
         });
 
         let contextText = "";
