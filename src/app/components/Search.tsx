@@ -68,6 +68,7 @@ export default function Search() {
           tokenCount += document.token;
           contextText += `${content.trim()}\n--\n`;
         }*/
+        console.log(documents);
         if (documents.length !== 0) 
         {
             const content = documents[0].content;
